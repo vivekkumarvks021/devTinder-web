@@ -1,25 +1,37 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import ScreenLoader from "../components/ScreenLoader";
+import { authSelector, loginUser } from "../store/slices/authSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { loading } = useSelector(authSelector);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await login({
-        email,
-        password,
-      });
-      console.log("Res", res);
-      if (res.data.success) {
-        navigate("/");
-      }
-    } catch (error) {}
+      await dispatch(
+        loginUser({
+          email,
+          password,
+        }),
+      ).unwrap();
+      toast.success("Login successful");
+      navigate("/");
+    } catch (error) {
+      toast.error(error || "Login failed");
+    }
   };
+
+  if (loading) {
+    return <ScreenLoader />;
+  }
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center px-4">

@@ -1,7 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../store/slices/authSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+
+      navigate("/login", {
+        replace: true,
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-1">
@@ -36,8 +51,8 @@ const Navbar = () => {
             <li>
               <a>Settings</a>
             </li>
-            <li>
-              <a>Logout</a>
+            <li onClick={handleLogout}>
+              <span>Logout</span>
             </li>
           </ul>
         </div>

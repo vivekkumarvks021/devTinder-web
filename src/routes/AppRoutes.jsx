@@ -7,6 +7,7 @@ import Profile from "../pages/Profile";
 import Connections from "../pages/Connections";
 import Requests from "../pages/Requests";
 import Signup from "../pages/Signup";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const appRouter = createBrowserRouter([
   {
@@ -18,24 +19,29 @@ const appRouter = createBrowserRouter([
     element: <Signup />,
   },
   {
-    path: "/",
-    element: <Layout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        index: true,
-        element: <Feed />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "connections",
-        element: <Connections />,
-      },
-      {
-        path: "requests",
-        element: <Requests />,
+        path: "/",
+        element: <Layout />,
+        children: [
+          {
+            index: true,
+            element: <Feed />,
+          },
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "connections",
+            element: <Connections />,
+          },
+          {
+            path: "requests",
+            element: <Requests />,
+          },
+        ],
       },
     ],
   },
