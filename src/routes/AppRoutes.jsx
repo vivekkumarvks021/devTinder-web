@@ -8,15 +8,21 @@ import Connections from "../pages/Connections";
 import Requests from "../pages/Requests";
 import Signup from "../pages/Signup";
 import ProtectedRoute from "../components/ProtectedRoute";
+import GuestRoute from "../components/GuestRoute";
 
 const appRouter = createBrowserRouter([
   {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
+    element: <GuestRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+    ],
   },
   {
     element: <ProtectedRoute />,

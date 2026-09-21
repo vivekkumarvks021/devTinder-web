@@ -16,6 +16,15 @@ const ProtectedRoute = () => {
     }
   }, [authChecked, dispatch]);
 
+  useEffect(() => {
+    if (user) {
+      sessionStorage.setItem(
+        "lastProtectedRoute",
+        location.pathname + location.search,
+      );
+    }
+  }, [user, location.pathname, location.search]);
+
   if (!authChecked) {
     return <ScreenLoader />;
   }
