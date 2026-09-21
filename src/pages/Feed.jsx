@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import UserCard from "../components/UserCard";
 import ScreenLoader from "../components/ScreenLoader";
-
 import {
   feedSelector,
   fetchFeed,
   removeUserFromFeed,
 } from "../store/slices/feedSlice";
-
 import { sendConnectionRequest } from "../services/connection.service";
 
 const Feed = () => {
   const dispatch = useDispatch();
 
   const { users, loading, error } = useSelector(feedSelector);
-
   const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {

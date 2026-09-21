@@ -1,6 +1,18 @@
 import { Briefcase, MapPin, X, Heart, Navigation } from "lucide-react";
+import useSwipe from "../hooks/useSwipe";
 
 const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
+  const {
+    currentX,
+    dragging,
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+  } = useSwipe({
+    onSwipeLeft: onIgnore,
+    onSwipeRight: onInterested,
+    disabled: actionLoading,
+  });
   const {
     firstName,
     lastName,
@@ -16,7 +28,17 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
 
   return (
     <div
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerCancel={handlePointerUp}
+      style={{
+        transform: `translateX(${currentX}px) rotate(${currentX / 25}deg)`,
+        transition: dragging ? "none" : "transform 0.25s ease",
+        touchAction: "pan-y",
+      }}
       className="
+        relative
         flex
         h-[calc(100vh-100px)]
         max-h-[720px]
@@ -29,7 +51,7 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
         border-base-content/10
         bg-base-100
         shadow-2xl
-      "
+        select-none"
     >
       {/* Profile Image */}
       <div className="relative min-h-0 flex-[1.15]">
