@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { signup } from "../services/auth.service";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -7,7 +8,7 @@ const Signup = () => {
     lastName: "",
     email: "",
     password: "",
-    age: "",
+    age: null,
     gender: "",
   });
 
@@ -20,10 +21,20 @@ const Signup = () => {
     }));
   };
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    const payload = {
+      ...formData,
+      age: Number(formData.age),
+    };
+    try {
+      const res = await signup(payload);
+
+      if (res.data.success) {
+        navigate("/");
+      }
+    } catch (error) {}
   };
 
   return (

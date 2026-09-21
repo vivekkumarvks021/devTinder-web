@@ -1,17 +1,24 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/auth.service";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    console.log({
-      email,
-      password,
-    });
+    try {
+      const res = await login({
+        email,
+        password,
+      });
+      console.log("Res", res);
+      if (res.data.success) {
+        navigate("/");
+      }
+    } catch (error) {}
   };
 
   return (
