@@ -45,9 +45,9 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
         relative
         flex
         h-[calc(100vh-100px)]
-        max-h-[720px]
+        max-h-180
         w-full
-        max-w-[440px]
+        max-w-110
         flex-col
         overflow-hidden
         rounded-3xl

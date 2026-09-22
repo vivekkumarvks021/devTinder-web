@@ -50,7 +50,7 @@ const Requests = () => {
       )}
 
       {requests.length === 0 ? (
-        <div className="flex min-h-[400px] items-center justify-center">
+        <div className="flex min-h-100 items-center justify-center">
           <div className="text-center">
             <h2 className="text-xl font-semibold">No pending requests</h2>
 
@@ -85,7 +85,7 @@ const Requests = () => {
                 <div className="avatar">
                   <div className="h-20 w-20 rounded-2xl">
                     <img
-                      src={user.photoUrl}
+                      src={user.photoUrl || "/male-avatar.png"}
                       alt={`${user.firstName} ${user.lastName}`}
                     />
                   </div>
