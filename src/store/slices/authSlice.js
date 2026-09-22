@@ -4,6 +4,7 @@ import {
   logout,
 } from "../../services/auth.service";
 import { login, signup } from "../../services/auth.service";
+import { updateProfileApi } from "../../services/profile.service";
 
 // LOGIN
 export const loginUser = createAsyncThunk(
@@ -55,6 +56,20 @@ export const logoutUser = createAsyncThunk(
       await logout();
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Logout failed");
+    }
+  },
+);
+
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await updateProfileApi(payload);
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update profile",
+      );
     }
   },
 );
@@ -146,6 +161,25 @@ const authSlice = createSlice({
       })
 
       .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.user = {
+          ...state.user,
+          ...action.payload,
+        };
+      })
+
+      .addCase(updateProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

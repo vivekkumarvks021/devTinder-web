@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { authSelector } from "../store/slices/authSlice";
+import { authSelector, updateProfile } from "../store/slices/authSlice";
 
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileView from "../components/Profile/ProfileView";
 import ProfileForm from "../components/Profile/ProfileForm";
 
+import { updateProfileApi } from "../services/profile.service";
+
 const Profile = () => {
-  const { user } = useSelector(authSelector);
+  const dispatch = useDispatch();
+
+  const { user, loading, error } = useSelector(authSelector);
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -49,12 +53,27 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    const payload = {
+      ...formData,
 
-    // API baad me
+      age: Number(formData.age),
+
+      skills: formData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter(Boolean),
+    };
+
+    try {
+      await dispatch(updateProfile(payload)).unwrap();
+
+      setIsEditing(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -69,8 +88,8 @@ const Profile = () => {
               onChange={handleChange}
               onSave={handleSave}
               onCancel={handleCancel}
-              saving={false}
-              error={null}
+              saving={loading}
+              error={error}
             />
           ) : (
             <ProfileView user={user} onEdit={handleEdit} />
