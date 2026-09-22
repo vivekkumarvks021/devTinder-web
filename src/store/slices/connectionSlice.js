@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   getReceivedRequests,
   reviewConnectionRequest,
+  getConnections,
 } from "../../services/connection.service";
 
 export const fetchRequests = createAsyncThunk(
@@ -35,9 +36,28 @@ export const reviewRequest = createAsyncThunk(
   },
 );
 
+export const fetchConnections = createAsyncThunk(
+  "connections/fetchConnections",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getConnections();
+
+      return response.data.connections;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch connections",
+      );
+    }
+  },
+);
+
 const initialState = {
   requests: [],
+  connections: [],
+
   loading: false,
+  connectionsLoading: false,
+
   actionLoading: null,
   error: null,
 };
@@ -80,6 +100,21 @@ const connectionSlice = createSlice({
 
       .addCase(reviewRequest.rejected, (state, action) => {
         state.actionLoading = null;
+        state.error = action.payload;
+      })
+
+      .addCase(fetchConnections.pending, (state) => {
+        state.connectionsLoading = true;
+        state.error = null;
+      })
+
+      .addCase(fetchConnections.fulfilled, (state, action) => {
+        state.connectionsLoading = false;
+        state.connections = action.payload;
+      })
+
+      .addCase(fetchConnections.rejected, (state, action) => {
+        state.connectionsLoading = false;
         state.error = action.payload;
       });
   },

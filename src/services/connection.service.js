@@ -11,3 +11,7 @@ export const getReceivedRequests = () => {
 export const reviewConnectionRequest = (status, requestId) => {
   return api.post(`/requests/review/${status}/${requestId}`);
 };
+
+export const getConnections = () => {
+  return api.get("/users/connections");
+};
