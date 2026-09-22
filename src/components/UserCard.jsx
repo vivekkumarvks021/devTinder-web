@@ -26,6 +26,10 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
     distance,
   } = user;
 
+  const stopSwipeOnButton = (e) => {
+    e.stopPropagation();
+  };
+
   return (
     <div
       onPointerDown={handlePointerDown}
@@ -157,6 +161,7 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
           <div className="flex flex-col items-center gap-1">
             <button
               type="button"
+              onPointerDown={stopSwipeOnButton}
               onClick={onIgnore}
               disabled={actionLoading === "ignored"}
               className="
@@ -188,6 +193,7 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
           <div className="flex flex-col items-center gap-1">
             <button
               type="button"
+              onPointerDown={stopSwipeOnButton}
               onClick={onInterested}
               disabled={actionLoading === "interested"}
               className="

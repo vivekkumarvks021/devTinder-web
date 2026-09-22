@@ -9,10 +9,13 @@ import Requests from "../pages/Requests";
 import Signup from "../pages/Signup";
 import ProtectedRoute from "../components/ProtectedRoute";
 import GuestRoute from "../components/GuestRoute";
+import ErrorBoundaryPage from "../pages/ErrorBoundaryPage";
+import PageNotFound from "../pages/PageNotFound";
 
 const appRouter = createBrowserRouter([
   {
     element: <GuestRoute />,
+    errorElement: <ErrorBoundaryPage />,
     children: [
       {
         path: "/login",
@@ -26,6 +29,7 @@ const appRouter = createBrowserRouter([
   },
   {
     element: <ProtectedRoute />,
+    errorElement: <ErrorBoundaryPage />,
     children: [
       {
         path: "/",
@@ -50,6 +54,10 @@ const appRouter = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
 ]);
 

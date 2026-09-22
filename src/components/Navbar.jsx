@@ -1,11 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logoutUser } from "../store/slices/authSlice";
+import { authSelector, logoutUser } from "../store/slices/authSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector(authSelector);
   const handleLogout = async () => {
     try {
       await dispatch(logoutUser()).unwrap();
@@ -24,7 +25,8 @@ const Navbar = () => {
           Dev<span className="text-primary">Tinder</span>
         </Link>
       </div>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        <span>Welcome, {user?.firstName}</span>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
