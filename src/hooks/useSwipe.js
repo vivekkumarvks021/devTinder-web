@@ -12,6 +12,7 @@ const useSwipe = ({
 
   const handlePointerDown = (e) => {
     if (disabled) return;
+    console.log(e.clientX, "start");
 
     setStartX(e.clientX);
     setDragging(true);
@@ -23,6 +24,7 @@ const useSwipe = ({
     if (!dragging || startX === null) return;
 
     const difference = e.clientX - startX;
+    console.log("Kitna move hua", difference);
 
     setCurrentX(difference);
   };
