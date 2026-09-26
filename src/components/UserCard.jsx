@@ -63,6 +63,9 @@ const UserCard = ({ user, onIgnore, onInterested, actionLoading }) => {
           src={photoUrl}
           alt={`${firstName} ${lastName}`}
           className="h-full w-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = "/male-avatar.png";
+          }}
         />
 
         {/* Distance */}

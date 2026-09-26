@@ -8,6 +8,9 @@ import {
   fetchConnections,
 } from "../store/slices/connectionSlice";
 import ConnectionCard from "../components/ConnectionCard";
+import ErrorState from "../components/ErrorState";
+import EmptyState from "../components/EmptyState";
+import { Users } from "lucide-react";
 
 const Connections = () => {
   const dispatch = useDispatch();
@@ -25,9 +28,20 @@ const Connections = () => {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-4xl p-6">
-        <div className="alert alert-error">{error}</div>
-      </div>
+      <ErrorState
+        message={error}
+        onRetry={() => dispatch(fetchConnections())}
+      />
+    );
+  }
+
+  if (!connections.length) {
+    return (
+      <EmptyState
+        title="No connections yet"
+        message="Start connecting with developers from your feed."
+        icon={Users}
+      />
     );
   }
 

@@ -8,6 +8,9 @@ import {
   removeUserFromFeed,
 } from "../store/slices/feedSlice";
 import { sendConnectionRequest } from "../services/connection.service";
+import { Users } from "lucide-react";
+import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
 
 const Feed = () => {
   const dispatch = useDispatch();
@@ -38,18 +41,16 @@ const Feed = () => {
   }
 
   if (error) {
-    return (
-      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
-        <p className="text-error">{error}</p>
-      </div>
-    );
+    return <ErrorState message={error} onRetry={() => dispatch(fetchFeed())} />;
   }
 
   if (!users.length) {
     return (
-      <div className="flex min-h-[calc(100vh-64px)] items-center justify-center">
-        <p className="text-base-content/60">No more developers available.</p>
-      </div>
+      <EmptyState
+        title="No more developers"
+        message="You've viewed everyone in your feed for now."
+        icon={Users}
+      />
     );
   }
 

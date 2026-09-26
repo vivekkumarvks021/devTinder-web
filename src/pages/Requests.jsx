@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Check, X } from "lucide-react";
+import { Check, Heart, X } from "lucide-react";
 
 import ScreenLoader from "../components/ScreenLoader";
 
@@ -9,6 +9,8 @@ import {
   fetchRequests,
   reviewRequest,
 } from "../store/slices/connectionSlice";
+import ErrorState from "../components/ErrorState";
+import EmptyState from "../components/EmptyState";
 
 const Requests = () => {
   const dispatch = useDispatch();
@@ -31,6 +33,22 @@ const Requests = () => {
 
   if (loading) {
     return <ScreenLoader />;
+  }
+
+  if (error) {
+    return (
+      <ErrorState message={error} onRetry={() => dispatch(fetchRequests())} />
+    );
+  }
+
+  if (!requests.length) {
+    return (
+      <EmptyState
+        title="No pending requests"
+        message="You don't have any connection requests right now."
+        icon={Heart}
+      />
+    );
   }
 
   return (
@@ -85,8 +103,11 @@ const Requests = () => {
                 <div className="avatar">
                   <div className="h-20 w-20 rounded-2xl">
                     <img
-                      src={user.photoUrl || "/male-avatar.png"}
+                      src={user?.photoUrl || "/male-avatar.png"}
                       alt={`${user.firstName} ${user.lastName}`}
+                      onError={(e) => {
+                        e.currentTarget.src = "/male-avatar.png";
+                      }}
                     />
                   </div>
                 </div>

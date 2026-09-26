@@ -8,6 +8,7 @@ import ProfileView from "../components/Profile/ProfileView";
 import ProfileForm from "../components/Profile/ProfileForm";
 
 import { updateProfileApi } from "../services/profile.service";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -71,8 +72,10 @@ const Profile = () => {
       await dispatch(updateProfile(payload)).unwrap();
 
       setIsEditing(false);
+      toast.success("Profile Updated Successfully.");
     } catch (error) {
       console.log(error);
+      toast.error("Error while profile update", error?.message);
     }
   };
 

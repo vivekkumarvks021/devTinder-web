@@ -13,6 +13,9 @@ const ProfileHeader = ({ user }) => {
                 src={photoUrl}
                 alt={`${firstName} ${lastName}`}
                 className="h-full w-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = "/male-avatar.png";
+                }}
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-base-200">

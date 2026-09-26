@@ -6,7 +6,13 @@ const ConnectionCard = ({ user }) => {
       {/* Profile Image */}
       <div className="avatar shrink-0">
         <div className="h-20 w-20 rounded-2xl">
-          <img src={user.photoUrl} alt={`${user.firstName} ${user.lastName}`} />
+          <img
+            src={user.photoUrl}
+            alt={`${user.firstName} ${user.lastName}`}
+            onError={(e) => {
+              e.currentTarget.src = "/male-avatar.png";
+            }}
+          />
         </div>
       </div>
 
