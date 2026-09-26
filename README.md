@@ -1,6 +1,6 @@
-# Project is live
+## 🌐 Live Demo
 
-    Live URL:- [https://devtinderbyvivek.in](https://devtinderbyvivek.in/login)
+🔗 [Visit DevTinder Live](http://devtinderbyvivek.in/)
 
 # React + Vite
 
